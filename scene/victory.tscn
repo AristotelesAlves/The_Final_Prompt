@@ -1,8 +1,9 @@
-[gd_scene load_steps=3 format=3]
-[ext_resource type="Script" path="res://scripts/cutscene.gd" id="1_cutscene"]
+[gd_scene load_steps=2 format=3]
 
-[node name="Cutscene" type="CanvasLayer"]
-script = ExtResource("1_cutscene")
+[ext_resource type="Script" path="res://scripts/victory.gd" id="1_victory"]
+
+[node name="Victory" type="CanvasLayer"]
+script = ExtResource("1_victory")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -22,19 +23,16 @@ grow_vertical = 2
 [node name="Label" type="Label" parent="CenterContainer"]
 custom_minimum_size = Vector2(800, 0)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.82, 0.98, 0.86, 1)
+theme_override_colors/font_color = Color(0.92, 0.96, 0.88, 1)
 theme_override_colors/font_shadow_color = Color(0.0, 0.0, 0.0, 1)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 32
-text = "Texto da Cutscene"
+text = ""
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 3.0
-
-[node name="Prompt" type="Label" parent="."]
+[node name="Hint" type="Label" parent="."]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -46,6 +44,6 @@ offset_right = -20.0
 offset_bottom = -20.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.470588, 0.470588, 0.470588, 1)
+theme_override_colors/font_color = Color(0.35, 0.35, 0.35, 1)
 text = "Clique para pular"
 horizontal_alignment = 2

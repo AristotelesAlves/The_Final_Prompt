@@ -46,6 +46,10 @@ offset_left = 20.0
 offset_top = 10.0
 offset_right = 400.0
 offset_bottom = 45.0
+theme_override_colors/font_color = Color(0.0, 0.92, 0.35, 1)
+theme_override_colors/font_shadow_color = Color(0.0, 0.0, 0.0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 24
 text = "ROUND: 1 | BUGS: 0"
 
@@ -91,3 +95,32 @@ show_percentage = false
 layout_mode = 2
 text = "APERTE ESPAÇO REPETIDAMENTE!"
 horizontal_alignment = 1
+
+[node name="BossPanel" type="VBoxContainer" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_top = 0.0
+anchor_right = 0.5
+anchor_bottom = 0.0
+offset_left = -200.0
+offset_top = 5.0
+offset_right = 200.0
+offset_bottom = 65.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="BossName" type="Label" parent="Control/BossPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = ""
+horizontal_alignment = 1
+
+[node name="BossHealthBar" type="ProgressBar" parent="Control/BossPanel"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+max_value = 25.0
+step = 1.0
+value = 25.0
+show_percentage = false
