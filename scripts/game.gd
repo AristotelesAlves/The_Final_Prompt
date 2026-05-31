@@ -78,9 +78,9 @@ func start_round() -> void:
 		enemies_alive = 0
 		_spawn_boss_for_round(current_round)
 	else:
-		enemies_to_spawn = 3 + (current_round * 2)
+		enemies_to_spawn = 2 + current_round
 		enemies_alive = 0
-		spawn_timer.wait_time = max(0.5, 2.0 / current_round)
+		spawn_timer.wait_time = max(1.0, 3.0 / current_round)
 		spawn_timer.start()
 
 func _on_spawn_timer_timeout() -> void:
@@ -151,6 +151,9 @@ func _on_enemy_died() -> void:
 	enemies_alive -= 1
 	if boss_panel.visible and enemies_alive <= 0:
 		boss_panel.visible = false
+	if player:
+		player.health = min(player.health + 10, 100)
+		player.update_health_bar()
 	update_hud()
 
 func update_hud() -> void:

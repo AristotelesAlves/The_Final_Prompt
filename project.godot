@@ -12,7 +12,7 @@ config_version=5
 
 config/name="The Final Prompt"
 run/main_scene="res://scene/main_menu.tscn"
-config/features=PackedStringArray("4.6", "Mobile")
+config/features=PackedStringArray("4.4", "Mobile")
 config/icon="res://icon.svg"
 
 [input]
@@ -48,7 +48,7 @@ attack={
 
 [rendering]
 
-environment/defaults/default_clear_color=Color(0.04, 0.04, 0.07, 1)
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
+environment/defaults/default_clear_color=Color(0.04, 0.04, 0.07, 1)

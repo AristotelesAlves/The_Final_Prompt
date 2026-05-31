@@ -79,7 +79,7 @@ func start_attack() -> void:
 	is_attacking = false
 
 func check_attack_hit() -> void:
-	var attack_range = 100.0
+	var attack_range = 150.0
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if global_position.distance_to(enemy.global_position) < attack_range:
 			if enemy.has_method("take_damage"): enemy.take_damage()
@@ -87,7 +87,7 @@ func check_attack_hit() -> void:
 func take_damage() -> void:
 	if is_invincible or health <= 0 or is_reviving: return
 		
-	health -= 25
+	health -= 20
 	is_invincible = true
 	update_health_bar()
 	
@@ -98,7 +98,7 @@ func take_damage() -> void:
 	if health <= 0:
 		start_revive_event()
 	else:
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.5).timeout
 		is_invincible = false
 
 func start_revive_event() -> void:

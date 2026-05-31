@@ -7,14 +7,16 @@ const SPEED_NORMAL = 120.0
 var player: Node2D = null
 var health := 2
 var max_health := 2
-var damage_cooldown := 0.0
+var damage_cooldown := 1.5
 var speed := SPEED_NORMAL
-var attack_damage_cooldown := 1.5
+var attack_damage_cooldown := 2.0
 var attack_range := 60.0
 var _base_color: Color
 
-# Defina boss_type ANTES de add_child para configurar o boss no _ready
-# 0 = inimigo normal, 1 = DeepSeek, 2 = Claude, 3 = GPT
+# Temporizador do telegraph: toca animação de ataque, dano vem depois
+var attack_timer := 0.0
+const ATTACK_WINDUP := 0.4
+
 var boss_type := 0
 var is_boss := false
 
@@ -39,21 +41,21 @@ func _configure_boss() -> void:
 			health = 8
 			max_health = 8
 			speed = 220.0
-			attack_damage_cooldown = 0.8
+			attack_damage_cooldown = 1.2
 			attack_range = 70.0
 			_base_color = Color(0.2, 0.85, 1.0)
 		2:  # Claude — estratégico, avança em lunge
 			health = 15
 			max_health = 15
 			speed = 150.0
-			attack_damage_cooldown = 1.2
+			attack_damage_cooldown = 1.8
 			attack_range = 80.0
 			_base_color = Color(1.0, 0.5, 0.1)
 		3:  # GPT — mais forte e frequente
 			health = 25
 			max_health = 25
 			speed = 175.0
-			attack_damage_cooldown = 0.5
+			attack_damage_cooldown = 1.0
 			attack_range = 70.0
 			_base_color = Color(0.1, 0.85, 0.4)
 	animation.modulate = _base_color
@@ -64,6 +66,14 @@ func _physics_process(delta: float) -> void:
 
 	if damage_cooldown > 0:
 		damage_cooldown -= delta
+
+	# Conta o windup e aplica dano ao fim
+	if attack_timer > 0:
+		attack_timer -= delta
+		if attack_timer <= 0 and player:
+			if player.has_method("take_damage"):
+				player.take_damage()
+			damage_cooldown = attack_damage_cooldown
 
 	if player:
 		var diff = player.global_position.x - global_position.x
@@ -86,11 +96,12 @@ func _handle_chase(diff: float, distance: float) -> void:
 	var direction = sign(diff)
 	if distance < attack_range and abs(player.global_position.y - global_position.y) < 100.0:
 		velocity.x = 0
-		animation.play("idle")
-		if damage_cooldown <= 0:
-			if player.has_method("take_damage"):
-				player.take_damage()
-				damage_cooldown = attack_damage_cooldown
+		if damage_cooldown <= 0 and attack_timer <= 0:
+			# Inicia o ataque: toca animação e agenda o dano
+			animation.play("attack")
+			attack_timer = ATTACK_WINDUP
+		elif attack_timer <= 0:
+			animation.play("idle")
 	else:
 		velocity.x = direction * speed
 		animation.play("walk")
@@ -124,9 +135,9 @@ func _handle_claude(delta: float, diff: float, distance: float) -> void:
 			animation.play("walk")
 			animation.flip_h = lunge_dir < 0
 			if distance < attack_range and abs(player.global_position.y - global_position.y) < 100.0:
-				if damage_cooldown <= 0 and player.has_method("take_damage"):
-					player.take_damage()
-					damage_cooldown = attack_damage_cooldown
+				if damage_cooldown <= 0 and attack_timer <= 0:
+					animation.play("attack")
+					attack_timer = ATTACK_WINDUP
 			if boss_state_timer <= 0:
 				boss_state = BossState.CHASE
 

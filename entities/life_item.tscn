@@ -12,6 +12,7 @@ func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group(\"player\"):
 		if body.health < 100:
 			body.health = min(100, body.health + 25)
+			body.update_health_bar()
 			body.update_hud_call()
 			queue_free()
 "
