@@ -1,0 +1,130 @@
+[gd_scene format=3 uid="uid://by3dih6c04gg5"]
+
+[ext_resource type="Texture2D" uid="uid://52c2o0b4qkib" path="res://sprites/cleiton/life.png" id="1_c15y5"]
+
+[sub_resource type="GDScript" id="GDScript_item"]
+script/source = "extends Area2D
+
+func _ready() -> void:
+	body_entered.connect(_on_body_entered)
+
+func _on_body_entered(body: Node2D) -> void:
+	if body.is_in_group(\"player\"):
+		if body.health < 100:
+			body.health = min(100, body.health + 25)
+			body.update_hud_call()
+			queue_free()
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_item"]
+size = Vector2(12.129206, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v8k1p"]
+atlas = ExtResource("1_c15y5")
+region = Rect2(0, 0, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cgu6x"]
+atlas = ExtResource("1_c15y5")
+region = Rect2(180, 0, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_scurm"]
+atlas = ExtResource("1_c15y5")
+region = Rect2(360, 0, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_guqhe"]
+atlas = ExtResource("1_c15y5")
+region = Rect2(540, 0, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aktc5"]
+atlas = ExtResource("1_c15y5")
+region = Rect2(720, 0, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rxfn4"]
+atlas = ExtResource("1_c15y5")
+region = Rect2(900, 0, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_il81v"]
+atlas = ExtResource("1_c15y5")
+region = Rect2(0, 360, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cpvx3"]
+atlas = ExtResource("1_c15y5")
+region = Rect2(180, 360, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gssjp"]
+atlas = ExtResource("1_c15y5")
+region = Rect2(360, 360, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_du8l5"]
+atlas = ExtResource("1_c15y5")
+region = Rect2(540, 360, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ta04f"]
+atlas = ExtResource("1_c15y5")
+region = Rect2(720, 360, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vjx8a"]
+atlas = ExtResource("1_c15y5")
+region = Rect2(900, 360, 180, 360)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h56hd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v8k1p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cgu6x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_scurm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_guqhe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aktc5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rxfn4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_il81v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cpvx3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gssjp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_du8l5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ta04f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vjx8a")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}]
+
+[node name="LifeItem" type="Area2D" unique_id=773734500]
+scale = Vector2(2.934097, 2.101159)
+script = SubResource("GDScript_item")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=623914576]
+position = Vector2(3, -1)
+scale = Vector2(0.98141325, 1)
+shape = SubResource("RectangleShape2D_item")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1026593945]
+modulate = Color(1, 0.380392, 0.32549, 1)
+position = Vector2(2.5, -1.25)
+scale = Vector2(0.16500062, 0.1270003)
+sprite_frames = SubResource("SpriteFrames_h56hd")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.7658703

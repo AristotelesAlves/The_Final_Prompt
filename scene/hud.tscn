@@ -1,4 +1,5 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Texture2D" uid="uid://dfo5wbp34gfe4" path="res://sprites/cleiton/Heart.png" id="1_heart"]
 
 [node name="HUD" type="CanvasLayer"]
 
@@ -10,14 +11,34 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HealthBar" type="ProgressBar" parent="Control"]
+[node name="HeartsContainer" type="HBoxContainer" parent="Control"]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 50.0
-offset_right = 320.0
-offset_bottom = 77.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-value = 100.0
+offset_right = 148.0
+offset_bottom = 80.0
+theme_override_constants/separation = 10
+
+[node name="Heart1" type="TextureRect" parent="Control/HeartsContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture = ExtResource("1_heart")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Heart2" type="TextureRect" parent="Control/HeartsContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture = ExtResource("1_heart")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Heart3" type="TextureRect" parent="Control/HeartsContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture = ExtResource("1_heart")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="Control"]
 layout_mode = 0
@@ -26,7 +47,7 @@ offset_top = 10.0
 offset_right = 400.0
 offset_bottom = 45.0
 theme_override_font_sizes/font_size = 24
-text = "VIDAS: 3 | ROUND: 1"
+text = "ROUND: 1 | BUGS: 0"
 
 [node name="RevivePanel" type="ColorRect" parent="Control"]
 visible = false

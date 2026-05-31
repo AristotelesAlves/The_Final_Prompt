@@ -5,6 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://ca10ncgu1jrhr" path="res://sprites/cleiton/attack.png" id="2_rfe5m"]
 [ext_resource type="Texture2D" uid="uid://rufw5cdhcodu" path="res://sprites/cleiton/Walk.png" id="3_e4p34"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health"]
+bg_color = Color(0.87, 0.16, 0.16, 1)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b0kkn"]
 size = Vector2(1.2499979, 12.612511)
 
@@ -528,9 +531,17 @@ animations = [{
 "speed": 15.0
 }]
 
-[node name="player" type="CharacterBody2D"]
-scale = Vector2(1, 1)
+[node name="player" type="CharacterBody2D" unique_id=841004866]
 script = ExtResource("1_merdl")
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=487667441]
+offset_left = -7.0
+offset_top = -20.0
+offset_right = 34.0
+offset_bottom = -16.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_health")
+value = 100.0
+show_percentage = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=271110602]
 position = Vector2(3.1249955, -1.3062509)
@@ -542,8 +553,9 @@ one_way_collision_margin = 2.0
 position = Vector2(2.4999962, -1.2500011)
 scale = Vector2(0.085185185, 0.087636486)
 sprite_frames = SubResource("SpriteFrames_6nm46")
-animation = &"attack"
+animation = &"jump"
 autoplay = "idle"
+frame_progress = 1.0
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1958741224]
 limit_left = 0

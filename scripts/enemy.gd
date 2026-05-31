@@ -2,13 +2,12 @@ extends CharacterBody2D
 
 @onready var animation: AnimatedSprite2D = $AnimatedSprite2D
 
-const SPEED = 100.0
-const DETECTION_RANGE = 500.0
+const SPEED = 120.0 # Um pouco mais rápido para te achar logo
+const DETECTION_RANGE = 5000.0 # Alcance quase infinito dentro da gaiola
 
 var player: Node2D = null
 var health := 2
 var damage_cooldown := 0.0
-var direction := 1.0
 
 func _ready() -> void:
 	add_to_group("enemies")
@@ -24,27 +23,30 @@ func _physics_process(delta: float) -> void:
 		var diff = player.global_position.x - global_position.x
 		var distance = abs(diff)
 
-		if distance < DETECTION_RANGE:
-			direction = sign(diff)
-			
-			# Lógica rudimentar para evitar buracos:
-			# Se estiver indo para um abismo ou parede (fora dos limites do chão)
-			if global_position.x < 100 or global_position.x > 1800:
-				direction *= -1
-			
+		# Sempre persegue o jogador se ele existir
+		var direction = sign(diff)
+		
+		# Se estiver muito perto, tenta atacar
+		if distance < 60.0 and abs(player.global_position.y - global_position.y) < 100.0:
+			velocity.x = 0
+			animation.play("idle")
+			if damage_cooldown <= 0:
+				if player.has_method("take_damage"):
+					player.take_damage()
+					damage_cooldown = 1.5 # Tempo entre ataques do inimigo
+		else:
+			# Se estiver longe, corre atrás
 			velocity.x = direction * SPEED
 			animation.play("walk")
 			animation.flip_h = direction < 0
-			
-			if distance < 60.0 and abs(player.global_position.y - global_position.y) < 100.0:
-				if damage_cooldown <= 0:
-					if player.has_method("take_damage"):
-						player.take_damage()
-						damage_cooldown = 1.0
-		else:
-			velocity.x = move_toward(velocity.x, 0, SPEED)
-			animation.play("idle")
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		animation.play("idle")
 	
+	# Se o inimigo cair por algum erro de mapa, ele morre e conta o ponto
+	if global_position.y > 900:
+		die()
+
 	move_and_slide()
 
 func take_damage() -> void:
@@ -55,7 +57,9 @@ func take_damage() -> void:
 	if health <= 0: die()
 
 func die() -> void:
+	# Desativa colisões para não contar morte dupla
 	set_physics_process(false)
+	$CollisionShape2D.disabled = true
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 0, 0.3)
 	await tween.finished

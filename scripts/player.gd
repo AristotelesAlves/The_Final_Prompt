@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @onready var animetion: AnimatedSprite2D = $AnimatedSprite2D
+@onready var health_bar: ProgressBar = $HealthBar
 
 const SPEED = 400.0
 const JUMP_VELOCITY = -600.0
@@ -13,6 +14,10 @@ var facing_right := true
 var is_invincible := false
 var is_reviving := false
 
+# Mini-game de Reviver
+var revive_mash := 0.0
+var revive_goal := 100.0
+
 # Canais de áudio
 var sfx_attack: AudioStreamPlayer2D
 var sfx_revive: AudioStreamPlayer2D
@@ -20,6 +25,7 @@ var sfx_revive: AudioStreamPlayer2D
 func _ready() -> void:
 	add_to_group("player")
 	setup_audio()
+	update_health_bar()
 	update_hud_call()
 
 func setup_audio() -> void:
@@ -83,7 +89,7 @@ func take_damage() -> void:
 		
 	health -= 25
 	is_invincible = true
-	update_hud_call()
+	update_health_bar()
 	
 	var tween = create_tween()
 	tween.tween_property(animetion, "modulate", Color.RED, 0.1)
@@ -97,19 +103,15 @@ func take_damage() -> void:
 
 func start_revive_event() -> void:
 	is_reviving = true
-	var revive_mash_start = 30.0
+	revive_mash = 30.0
+	velocity = Vector2.ZERO
+	
 	var hud = get_parent().get_node_or_null("HUD/Control/RevivePanel")
 	if hud: hud.visible = true
 	
 	var game = get_parent()
 	if game and "bgm" in game: game.bgm.stop()
 	if sfx_revive.stream: sfx_revive.play()
-	
-	# Reinicia o valor do mash
-	get_parent().get_node("player").revive_mash = revive_mash_start
-
-var revive_mash := 0.0
-var revive_goal := 100.0
 
 func handle_revive(delta: float) -> void:
 	revive_mash -= delta * 20.0 
@@ -132,18 +134,24 @@ func complete_revive(success: bool) -> void:
 		is_invincible = false
 		var game = get_parent()
 		if game and "bgm" in game: game.bgm.play()
+		update_health_bar()
 		update_hud_call()
 	else:
 		lives -= 1
+		update_hud_call()
 		if lives > 0:
 			health = 100
-			global_position = Vector2(41, 400)
+			global_position = Vector2(100, 400)
 			is_invincible = false
 			var game = get_parent()
 			if game and "bgm" in game: game.bgm.play()
-			update_hud_call()
+			update_health_bar()
 		else:
 			get_tree().change_scene_to_file("res://scene/game_over.tscn")
+
+func update_health_bar() -> void:
+	if health_bar:
+		health_bar.value = health
 
 func update_hud_call() -> void:
 	var game = get_parent()
