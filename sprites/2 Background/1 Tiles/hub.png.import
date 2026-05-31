@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ca10ncgu1jrhr"
-path="res://.godot/imported/attack.png-86efe25645e6b288990e8bf94800f04f.ctex"
+uid="uid://dimywfgai3w5q"
+path="res://.godot/imported/hub.png-04d729f0506e39a0b9fb1f33bc565f41.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/cleiton/attack.png"
-dest_files=["res://.godot/imported/attack.png-86efe25645e6b288990e8bf94800f04f.ctex"]
+source_file="res://sprites/2 Background/1 Tiles/hub.png"
+dest_files=["res://.godot/imported/hub.png-04d729f0506e39a0b9fb1f33bc565f41.ctex"]
 
 [params]
 

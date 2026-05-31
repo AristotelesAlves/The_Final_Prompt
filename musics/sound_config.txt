@@ -1,0 +1,9 @@
+# CONFIGURAÇÃO DE SONS DO JOGO
+# Basta colocar os arquivos com estes nomes exatos na pasta 'res://musics/'
+
+BGM_GAME = "res://musics/bgm_game.mp3"       # Música de fundo do jogo
+SFX_JUMP = "res://musics/sfx_jump.wav"       # Som de pulo
+SFX_ATTACK = "res://musics/sfx_attack.wav"   # Som de ataque
+SFX_FOOTSTEPS = "res://musics/sfx_steps.wav" # Som de passos (Cutscene)
+SFX_FALL = "res://musics/sfx_fall.wav"       # Som ao cair no fosso
+SFX_REVIVE = "res://musics/gaita_do_reviver.mp3" # Som de morte/reviver
