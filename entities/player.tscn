@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://d0i1okc7je0ny"]
+[gd_scene load_steps=79 format=3 uid="uid://d0i1okc7je0ny"]
 
 [ext_resource type="Script" uid="uid://c5ybdl5xgyjg1" path="res://scripts/player.gd" id="1_merdl"]
 [ext_resource type="Texture2D" uid="uid://bsgc1bb2swcr1" path="res://sprites/cleiton/idle.png" id="2_b0kkn"]
@@ -9,7 +9,7 @@
 bg_color = Color(0.87, 0.16, 0.16, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b0kkn"]
-size = Vector2(1.2499979, 12.612511)
+size = Vector2(1.25, 12.6125)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ud54e"]
 atlas = ExtResource("2_rfe5m")
@@ -531,10 +531,10 @@ animations = [{
 "speed": 15.0
 }]
 
-[node name="player" type="CharacterBody2D" unique_id=841004866]
+[node name="player" type="CharacterBody2D"]
 script = ExtResource("1_merdl")
 
-[node name="HealthBar" type="ProgressBar" parent="." unique_id=487667441]
+[node name="HealthBar" type="ProgressBar" parent="."]
 offset_left = -7.0
 offset_top = -20.0
 offset_right = 34.0
@@ -543,21 +543,21 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_health")
 value = 100.0
 show_percentage = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=271110602]
-position = Vector2(3.1249955, -1.3062509)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(3.125, -1.30625)
 shape = SubResource("RectangleShape2D_b0kkn")
 one_way_collision = true
 one_way_collision_margin = 2.0
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=728482249]
-position = Vector2(2.4999962, -1.2500011)
-scale = Vector2(0.085185185, 0.087636486)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(2.5, -1.25)
+scale = Vector2(0.0851852, 0.0876365)
 sprite_frames = SubResource("SpriteFrames_6nm46")
 animation = &"jump"
 autoplay = "idle"
 frame_progress = 1.0
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1958741224]
+[node name="Camera2D" type="Camera2D" parent="."]
 limit_left = 0
 limit_right = 100000
 limit_bottom = 800

@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://b0c3dgjpwyymy"]
 
-[ext_resource type="Script" path="res://scripts/victory.gd" id="1_victory"]
+[ext_resource type="Script" uid="uid://byqfonvs8j72p" path="res://scripts/victory.gd" id="1_victory"]
 
 [node name="Victory" type="CanvasLayer"]
 script = ExtResource("1_victory")
@@ -24,11 +24,10 @@ grow_vertical = 2
 custom_minimum_size = Vector2(800, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.92, 0.96, 0.88, 1)
-theme_override_colors/font_shadow_color = Color(0.0, 0.0, 0.0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 32
-text = ""
 horizontal_alignment = 1
 autowrap_mode = 3
 

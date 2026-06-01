@@ -16,7 +16,9 @@ var life_item_scene = preload("res://entities/life_item.tscn")
 var bgm: AudioStreamPlayer
 var spawn_timer: Timer
 
-const BOSS_ROUNDS := {8: 1, 9: 2, 10: 3}
+# --- CRONOGRAMA PROGRESSIVO DAS HORDAS CONFIGURADO ---
+# Round 4: DeepSeek (1) | Round 7: Claude (2) | Round 10: GPT Boss (3)
+const BOSS_ROUNDS := {4: 1, 7: 2, 10: 3}
 const BOSS_NAMES := {1: "DeepSeek", 2: "Claude", 3: "GPT"}
 
 func _ready() -> void:
@@ -92,12 +94,21 @@ func _on_spawn_timer_timeout() -> void:
 
 func spawn_enemy() -> void:
 	var enemy = enemy_scene.instantiate()
+	
+	# --- CORREÇÃO: Garante que reseta para Tipo 0 antes de carregar o pronto ---
+	enemy.boss_type = 0
+	
 	var offset = randf_range(400, 800)
 	if randf() > 0.5: offset *= -1
+	
 	var spawn_x = clamp(player.global_position.x + offset, 100, 1900)
-	enemy.position = Vector2(spawn_x, 600)
-	enemy.scale = Vector2(8, 8)
+	var spawn_y = player.global_position.y - 50.0
+	enemy.position = Vector2(spawn_x, spawn_y)
+	
+	enemy.scale = Vector2(8, 8) 
 	add_child(enemy)
+	
+	enemy.force_update_transform()
 	enemy.tree_exited.connect(_on_enemy_died)
 	enemies_alive += 1
 	update_hud()
@@ -105,11 +116,26 @@ func spawn_enemy() -> void:
 func _spawn_boss_for_round(round_num: int) -> void:
 	var type: int = BOSS_ROUNDS[round_num]
 	var boss = enemy_scene.instantiate()
-	boss.boss_type = type  # define antes do add_child para que _ready configure o boss
-	var spawn_x = clamp(player.global_position.x + 900, 100, 1900)
-	boss.position = Vector2(spawn_x, 600)
-	boss.scale = Vector2(8, 8)
-	add_child(boss)  # _ready roda aqui e chama _configure_boss
+	boss.boss_type = type 
+	
+	# --- SISTEMA ANTIBURACO DE SPAWN REVERSO ---
+	var spawn_x: float
+	if player.global_position.x > 1300:
+		spawn_x = clamp(player.global_position.x - 600, 100, 1900)
+	else:
+		spawn_x = clamp(player.global_position.x + 600, 100, 1900)
+	
+	var spawn_y = player.global_position.y - 50.0
+	boss.position = Vector2(spawn_x, spawn_y)
+	
+	# --- CORREÇÃO DE ESCALA CIRÚRGICA ---
+	# Reseta a escala global do nó para (1, 1) em todos os chefes.
+	# Agora o tamanho real deles vai obedecer unicamente o código do enemy.gd!
+	boss.scale = Vector2(1.0, 1.0)
+		
+	add_child(boss) 
+	boss.force_update_transform()
+	
 	boss.health_changed.connect(_on_boss_health_changed)
 	boss.tree_exited.connect(_on_enemy_died)
 	enemies_alive += 1
@@ -126,7 +152,7 @@ func _apply_boss_theme(type: int) -> void:
 	match type:
 		1: boss_color = Color(0.2, 0.85, 1.0)
 		2: boss_color = Color(1.0, 0.5, 0.1)
-		3: boss_color = Color(0.1, 0.85, 0.4)
+		3: boss_color = Color(1.0, 0.0, 0.0) 
 
 	boss_name_label.add_theme_color_override("font_color", boss_color)
 

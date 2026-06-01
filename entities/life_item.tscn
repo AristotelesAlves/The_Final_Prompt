@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://by3dih6c04gg5"]
+[gd_scene load_steps=17 format=3 uid="uid://by3dih6c04gg5"]
 
 [ext_resource type="Texture2D" uid="uid://52c2o0b4qkib" path="res://sprites/cleiton/life.png" id="1_c15y5"]
 
@@ -18,7 +18,7 @@ func _on_body_entered(body: Node2D) -> void:
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_item"]
-size = Vector2(12.129206, 24)
+size = Vector2(12.1292, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_v8k1p"]
 atlas = ExtResource("1_c15y5")
@@ -112,20 +112,20 @@ animations = [{
 "speed": 6.0
 }]
 
-[node name="LifeItem" type="Area2D" unique_id=773734500]
-scale = Vector2(2.934097, 2.101159)
+[node name="LifeItem" type="Area2D"]
+scale = Vector2(2.9341, 2.10116)
 script = SubResource("GDScript_item")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=623914576]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(3, -1)
-scale = Vector2(0.98141325, 1)
+scale = Vector2(0.981413, 1)
 shape = SubResource("RectangleShape2D_item")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1026593945]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 modulate = Color(1, 0.380392, 0.32549, 1)
 position = Vector2(2.5, -1.25)
-scale = Vector2(0.16500062, 0.1270003)
+scale = Vector2(0.165001, 0.127)
 sprite_frames = SubResource("SpriteFrames_h56hd")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.7658703
+frame_progress = 0.76587
