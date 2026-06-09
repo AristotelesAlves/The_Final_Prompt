@@ -38,6 +38,9 @@ func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
 	_base_color = animation.modulate
 	
+	# Desincroniza o tempo de ataque inicial
+	damage_cooldown = randf_range(0.5, 2.5)
+	
 	if has_node("TextureProgressBar"):
 		$TextureProgressBar.hide()
 		
@@ -140,7 +143,7 @@ func _physics_process(delta: float) -> void:
 
 	if damage_cooldown > 0:
 		damage_cooldown -= delta
-		
+
 	if gpt_cooldown_timer > 0:
 		gpt_cooldown_timer -= delta
 
@@ -153,13 +156,18 @@ func _physics_process(delta: float) -> void:
 		var diff = player.global_position.x - global_position.x
 		var distance = abs(diff)
 
+		# Inteligência de Pulo: se o player estiver acima e o inimigo estiver no chão
+		if is_on_floor() and player.global_position.y < global_position.y - 100:
+			if randf() < 0.05: # Chance pequena por frame para não pularem todos juntos
+				velocity.y = -600.0
+
 		if is_boss:
-			if boss_type == 2:
+			if boss_type == 1:
+				_handle_chase(diff, distance)
+			elif boss_type == 2:
 				_handle_claude(delta, diff, distance)
 			elif boss_type == 3:
 				_handle_gpt_boss(delta, diff, distance)
-			else:
-				_handle_chase(diff, distance)
 		else:
 			_handle_chase(diff, distance)
 	else:
@@ -182,6 +190,9 @@ func _handle_chase(diff: float, distance: float) -> void:
 	if distance < attack_range and abs(player.global_position.y - global_position.y) < 100.0:
 		velocity.x = 0
 		if damage_cooldown <= 0 and attack_timer <= 0:
+			# Adiciona um pequeno atraso aleatório extra para não baterem no mesmo frame
+			damage_cooldown = randf_range(0.1, 0.4) 
+			
 			if boss_type == 1:
 				animation.play("atack_deepseek")
 			else:

@@ -12,6 +12,7 @@ var enemies_to_spawn := 0
 var enemies_alive := 0
 var enemy_scene = preload("res://entities/enemy.tscn")
 var life_item_scene = preload("res://entities/life_item.tscn")
+var grenade_item_scene = preload("res://entities/grenade_item.tscn")
 
 var bgm: AudioStreamPlayer
 var spawn_timer: Timer
@@ -68,6 +69,7 @@ func _process(_delta: float) -> void:
 		if current_round < 10:
 			current_round += 1
 			spawn_life_item()
+			spawn_grenade_item()
 			start_round()
 		else:
 			get_tree().change_scene_to_file("res://scene/victory.tscn")
@@ -105,7 +107,7 @@ func spawn_enemy() -> void:
 	var spawn_y = player.global_position.y - 50.0
 	enemy.position = Vector2(spawn_x, spawn_y)
 	
-	enemy.scale = Vector2(8, 8) 
+	enemy.scale = Vector2(8, 8) # Agora sim do mesmo tamanho que o Cleiton
 	add_child(enemy)
 	
 	enemy.force_update_transform()
@@ -169,6 +171,11 @@ func spawn_life_item() -> void:
 	item.position = Vector2(randf_range(200, 1800), 600)
 	add_child(item)
 
+func spawn_grenade_item() -> void:
+	var item = grenade_item_scene.instantiate()
+	item.position = Vector2(randf_range(200, 1800), 400) # Pode spawnar em plataformas
+	add_child(item)
+
 func _on_boss_health_changed(current: int, maximum: int) -> void:
 	boss_health_bar.max_value = maximum
 	boss_health_bar.value = current
@@ -191,7 +198,8 @@ func update_hud() -> void:
 		h2.visible = player.lives >= 2
 		h3.visible = player.lives >= 3
 
+		var grenade_text = " | GRENADES: %d" % player.grenades_ammo
 		if current_round in BOSS_ROUNDS:
-			hud_label.text = "ROUND: %d/10 | BOSS" % current_round
+			hud_label.text = "ROUND: %d/10 | BOSS" % current_round + grenade_text
 		else:
-			hud_label.text = "ROUND: %d/10 | BUGS: %d" % [current_round, enemies_alive + enemies_to_spawn]
+			hud_label.text = "ROUND: %d/10 | BUGS: %d" % [current_round, enemies_alive + enemies_to_spawn] + grenade_text

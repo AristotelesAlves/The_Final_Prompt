@@ -4,8 +4,14 @@ extends CharacterBody2D
 @onready var health_bar: ProgressBar = $HealthBar
 
 const SPEED = 400.0
+const ACCEL = 1500.0
+const FRICTION = 2000.0
 const JUMP_VELOCITY = -600.0
 const ATTACK_TIME = 0.45
+
+var grenade_scene = preload("res://entities/granada.tscn")
+var grenade_cooldown := 0.0
+var grenades_ammo := 0
 
 var health := 100.0
 var lives := 3
@@ -43,6 +49,8 @@ func _physics_process(delta: float) -> void:
 		handle_revive(delta)
 		return
 
+	if grenade_cooldown > 0: grenade_cooldown -= delta
+
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
@@ -50,19 +58,19 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 
 	var direction := Input.get_axis("left", "right")
-	if direction:
-		velocity.x = direction * SPEED
+	if direction != 0:
+		velocity.x = move_toward(velocity.x, direction * SPEED, ACCEL * delta)
+		facing_right = direction > 0
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-
-	if is_on_floor():
-		if direction > 0: facing_right = true
-		elif direction < 0: facing_right = false
+		velocity.x = move_toward(velocity.x, 0, FRICTION * delta)
 
 	animetion.flip_h = not facing_right
 
 	if Input.is_action_just_pressed("attack") and not is_attacking:
 		start_attack()
+		
+	if Input.is_action_just_pressed("grenade") and grenade_cooldown <= 0 and grenades_ammo > 0:
+		throw_grenade()
 
 	if not is_attacking:
 		if direction != 0: animetion.play("walk")
@@ -83,6 +91,22 @@ func check_attack_hit() -> void:
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if global_position.distance_to(enemy.global_position) < attack_range:
 			if enemy.has_method("take_damage"): enemy.take_damage()
+
+func throw_grenade() -> void:
+	grenades_ammo -= 1
+	grenade_cooldown = 0.6 # Cooldown curto para não travar a ação
+	var granada = grenade_scene.instantiate()
+	granada.global_position = global_position + Vector2(0, -30)
+	get_parent().add_child(granada)
+	
+	# Arremesso mais natural: força pra frente e um pouco pra cima
+	var launch_dir = Vector2(1.2, -1.0).normalized() if facing_right else Vector2(-1.2, -1.0).normalized()
+	granada.apply_central_impulse(launch_dir * 600.0)
+	update_hud_call()
+
+func add_grenades(amount: int) -> void:
+	grenades_ammo += amount
+	update_hud_call()
 
 func take_damage() -> void:
 	if is_invincible or health <= 0 or is_reviving: return

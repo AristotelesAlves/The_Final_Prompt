@@ -53,4 +53,4 @@ func _input(event: InputEvent) -> void:
 		start_game()
 
 func start_game() -> void:
-	get_tree().change_scene_to_file("res://scene/game.tscn")
+	get_tree().change_scene_to_file("res://scene/boss_arena_night.tscn")
