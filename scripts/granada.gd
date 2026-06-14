@@ -1,19 +1,29 @@
 extends RigidBody2D
 
 var explosion_scene = preload("res://entities/explosion_effect.tscn")
-var explosion_radius := 200.0
+var explosion_radius := 250.0
 var damage_delay := 1.5
+var exploded := false
 
 func _ready() -> void:
 	await get_tree().create_timer(damage_delay).timeout
 	explode()
 
+func _physics_process(_delta: float) -> void:
+	# Se a granada cair num buraco e sair do mapa, explode antes de se perder no vazio
+	if not exploded and global_position.y > 900:
+		explode()
+
 func explode() -> void:
+	if exploded:
+		return
+	exploded = true
+
 	# Efeito visual - Adiciona ao pai e centraliza (sobe um pouco a animação)
 	var exp_inst = explosion_scene.instantiate()
 	get_parent().add_child(exp_inst)
-	# Subimos 40 pixels para a explosão não parecer "enterrada" no chão
-	exp_inst.global_position = global_position + Vector2(0, -40)
+	# Sprite agora é centralizado corretamente, então a explosão fica no ponto de impacto
+	exp_inst.global_position = global_position
 	
 	# Som da explosão
 	var sfx = AudioStreamPlayer.new()

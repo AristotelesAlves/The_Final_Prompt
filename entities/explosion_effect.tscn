@@ -4,23 +4,15 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1"]
 atlas = ExtResource("1_tex")
-region = Rect2(0, 0, 128, 128)
+region = Rect2(0, 0, 315, 360)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2"]
 atlas = ExtResource("1_tex")
-region = Rect2(128, 0, 128, 128)
+region = Rect2(315, 0, 315, 360)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3"]
 atlas = ExtResource("1_tex")
-region = Rect2(256, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4"]
-atlas = ExtResource("1_tex")
-region = Rect2(384, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_5"]
-atlas = ExtResource("1_tex")
-region = Rect2(512, 0, 128, 128)
+region = Rect2(630, 0, 315, 360)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_exp"]
 animations = [{
@@ -33,12 +25,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_3")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5")
 }],
 "loop": false,
 "name": &"default",
@@ -46,13 +32,13 @@ animations = [{
 }]
 
 [node name="ExplosionEffect" type="AnimatedSprite2D"]
-scale = Vector2(4, 4)
+scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_exp")
 autoplay = "default"
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.4
+wait_time = 0.3
 one_shot = true
-autoplay = true
+autostart = true
 
 [connection signal="timeout" from="Timer" to="." method="queue_free"]

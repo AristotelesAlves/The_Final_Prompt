@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dbdbuwhjy5twv"]
 
-[ext_resource type="Texture2D" uid="uid://dfo5wbp34gfe4" path="res://sprites/cleiton/Heart.png" id="1_heart"]
+[ext_resource type="Texture2D" uid="uid://dfo5wbp34gfe4" path="res://sprites/inimigo/Heart.png" id="1_heart"]
 
 [node name="HUD" type="CanvasLayer"]
 

@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://d0i1okc7je0ny"]
 
 [ext_resource type="Script" uid="uid://c5ybdl5xgyjg1" path="res://scripts/player.gd" id="1_merdl"]
-[ext_resource type="Texture2D" uid="uid://bsgc1bb2swcr1" path="res://sprites/cleiton/idle.png" id="2_b0kkn"]
-[ext_resource type="Texture2D" uid="uid://ca10ncgu1jrhr" path="res://sprites/cleiton/attack.png" id="2_rfe5m"]
-[ext_resource type="Texture2D" uid="uid://rufw5cdhcodu" path="res://sprites/cleiton/Walk.png" id="3_e4p34"]
+[ext_resource type="Texture2D" uid="uid://b2n8r80vqlsg6" path="res://sprites/cleiton_v2/idle.png" id="2_b0kkn"]
+[ext_resource type="Texture2D" uid="uid://cmb0g3tmikqov" path="res://sprites/cleiton_v2/atack.png" id="2_rfe5m"]
+[ext_resource type="Texture2D" uid="uid://dswdt7cpmq0qo" path="res://sprites/cleiton_v2/walk.png" id="3_e4p34"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health"]
 bg_color = Color(0.87, 0.16, 0.16, 1)
@@ -348,42 +348,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_voruf")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_dtkf1")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hmnes")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ilajk")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_aafgp")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_1rwb6")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_yposf")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5hqg2")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_aoj7m")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gbtmb")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_o75mw")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rwip8")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2tbg1")
 }],
 "loop": false,
 "name": &"attack",

@@ -197,21 +197,24 @@ func _handle_chase(diff: float, distance: float) -> void:
 				animation.play("atack_deepseek")
 			else:
 				animation.play("attack") # Cleiton comum
+				animation.position.y = -12.4 # Sprite de ataque tem moldura maior, ajusta para não enterrar no chão
 			attack_timer = ATTACK_WINDUP
 		elif attack_timer <= 0:
 			if boss_type == 1:
 				animation.play("walk_deepseek")
 			else:
 				animation.play("idle")
+				animation.position.y = 2.0
 	else:
 		velocity.x = direction * speed
 		if boss_type == 3:
 			animation.play("walk_gpt")
 		elif boss_type == 1:
-			animation.play("walk_deepseek") 
+			animation.play("walk_deepseek")
 		else:
 			animation.play("walk") # Cleiton comum
-			
+			animation.position.y = 2.0
+
 		animation.flip_h = direction < 0
 
 # --- ATUALIZADO: Movimentação e Ataques Exclusivos do Claude ---
@@ -322,7 +325,15 @@ func _apply_attack_damage() -> void:
 	if current_dist <= current_range and current_height_diff < check_height:
 		if boss_type != 3 or player_dir == boss_facing_dir or current_dist < 20.0:
 			if player.has_method("take_damage"):
-				player.take_damage()
+				var damage := 20.0
+				match boss_type:
+					1: damage = 25.0  # DeepSeek
+					2: damage = 30.0  # Claude
+					3: # GPT
+						if boss_state == BossState.TOKEN_BEAM: damage = 40.0
+						elif boss_state == BossState.SHIELD_SLAM: damage = 35.0
+						else: damage = 25.0
+				player.take_damage(damage)
 			
 	damage_cooldown = attack_damage_cooldown
 	

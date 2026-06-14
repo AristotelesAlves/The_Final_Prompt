@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://nyp2wrwfqkn"
-path="res://.godot/imported/Tile_61.png-7772092be599acf2b52535127eaf9bb4.ctex"
+uid="uid://dfo5wbp34gfe4"
+path="res://.godot/imported/Heart.png-ff6082c46c22b7de2e040f318b798998.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/2 Background/1 Tiles/Tile_61.png"
-dest_files=["res://.godot/imported/Tile_61.png-7772092be599acf2b52535127eaf9bb4.ctex"]
+source_file="res://sprites/inimigo/Heart.png"
+dest_files=["res://.godot/imported/Heart.png-ff6082c46c22b7de2e040f318b798998.ctex"]
 
 [params]
 

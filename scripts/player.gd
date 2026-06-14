@@ -121,7 +121,9 @@ func throw_grenade() -> void:
 	var granada = grenade_scene.instantiate()
 	granada.global_position = global_position + Vector2(0, -30)
 	get_parent().add_child(granada)
-	
+	# Evita que a granada colida com o próprio jogador ao nascer e caia aos pés dele
+	granada.add_collision_exception_with(self)
+
 	# Arremesso mais natural: força pra frente e um pouco pra cima
 	var launch_dir = Vector2(1.2, -1.0).normalized() if facing_right else Vector2(-1.2, -1.0).normalized()
 	granada.apply_central_impulse(launch_dir * 600.0)
@@ -131,10 +133,10 @@ func add_grenades(amount: int) -> void:
 	grenades_ammo += amount
 	update_hud_call()
 
-func take_damage() -> void:
+func take_damage(amount: float = 20.0) -> void:
 	if is_invincible or health <= 0 or is_reviving: return
-		
-	health -= 20
+
+	health -= amount
 	is_invincible = true
 	update_health_bar()
 	
