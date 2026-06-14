@@ -38,10 +38,11 @@ func setup_spawn_timer() -> void:
 func setup_audio() -> void:
 	bgm = AudioStreamPlayer.new()
 	bgm.stream = load("res://musics/bgm_game.mp3")
+	bgm.bus = "Music" if AudioServer.get_bus_index("Music") != -1 else "Master"
 	bgm.autoplay = true
 	add_child(bgm)
 	if bgm.stream:
-		bgm.volume_db = -5.0
+		bgm.volume_db = -6.0
 		bgm.play()
 
 func setup_cage() -> void:

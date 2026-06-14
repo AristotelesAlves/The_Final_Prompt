@@ -25,8 +25,10 @@ var revive_mash := 0.0
 var revive_goal := 100.0
 
 # Canais de áudio
-var sfx_attack: AudioStreamPlayer2D
-var sfx_revive: AudioStreamPlayer2D
+var sfx_attack: AudioStreamPlayer
+var sfx_revive: AudioStreamPlayer
+var sfx_steps: AudioStreamPlayer
+var sfx_jump: AudioStreamPlayer
 
 func _ready() -> void:
 	add_to_group("player")
@@ -35,14 +37,29 @@ func _ready() -> void:
 	update_hud_call()
 
 func setup_audio() -> void:
-	sfx_attack = AudioStreamPlayer2D.new()
+	sfx_attack = AudioStreamPlayer.new()
 	sfx_attack.stream = load("res://musics/sfx_attack.wav")
+	sfx_attack.bus = "SFX" if AudioServer.get_bus_index("SFX") != -1 else "Master"
+	sfx_attack.volume_db = 0.0
 	add_child(sfx_attack)
 	
-	sfx_revive = AudioStreamPlayer2D.new()
+	sfx_revive = AudioStreamPlayer.new()
 	sfx_revive.stream = load("res://musics/gaita_do_reviver.mp3")
-	sfx_revive.volume_db = -12.0
+	sfx_revive.bus = "SFX" if AudioServer.get_bus_index("SFX") != -1 else "Master"
+	sfx_revive.volume_db = -6.0
 	add_child(sfx_revive)
+	
+	sfx_steps = AudioStreamPlayer.new()
+	sfx_steps.stream = load("res://musics/sfx_steps.wav")
+	sfx_steps.bus = "SFX" if AudioServer.get_bus_index("SFX") != -1 else "Master"
+	sfx_steps.volume_db = 0.0 # Reduzido de 10.0 para 0.0
+	add_child(sfx_steps)
+	
+	sfx_jump = AudioStreamPlayer.new()
+	sfx_jump.stream = load("res://musics/sfx_jump.wav")
+	sfx_jump.bus = "SFX" if AudioServer.get_bus_index("SFX") != -1 else "Master"
+	sfx_jump.volume_db = -5.0
+	add_child(sfx_jump)
 
 func _physics_process(delta: float) -> void:
 	if is_reviving:
@@ -53,9 +70,11 @@ func _physics_process(delta: float) -> void:
 
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+		if sfx_steps.playing: sfx_steps.stop()
 
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
+		if sfx_jump.stream: sfx_jump.play()
 
 	var direction := Input.get_axis("left", "right")
 	if direction != 0:
@@ -73,8 +92,12 @@ func _physics_process(delta: float) -> void:
 		throw_grenade()
 
 	if not is_attacking:
-		if direction != 0: animetion.play("walk")
-		else: animetion.play("idle")
+		if direction != 0: 
+			animetion.play("walk")
+			if is_on_floor() and not sfx_steps.playing: sfx_steps.play(8.0)
+		else: 
+			animetion.play("idle")
+			sfx_steps.stop()
 
 	move_and_slide()
 

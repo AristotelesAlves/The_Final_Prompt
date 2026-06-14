@@ -24,6 +24,8 @@ func _ready() -> void:
 func setup_audio() -> void:
 	sfx_steps = AudioStreamPlayer.new()
 	sfx_steps.stream = load("res://musics/sfx_steps.wav")
+	sfx_steps.bus = "SFX" if AudioServer.get_bus_index("SFX") != -1 else "Master"
+	sfx_steps.volume_db = 0.0
 	add_child(sfx_steps)
 
 func show_dialog() -> void:
@@ -32,7 +34,7 @@ func show_dialog() -> void:
 		label.modulate.a = 0
 		
 		# Toca som de passos se for um texto de movimento (exemplo)
-		if sfx_steps.stream: sfx_steps.play()
+		if sfx_steps.stream: sfx_steps.play(8.0)
 		
 		var tween = create_tween()
 		tween.tween_property(label, "modulate:a", 1.0, 1.0)

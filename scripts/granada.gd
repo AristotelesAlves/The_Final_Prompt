@@ -15,6 +15,20 @@ func explode() -> void:
 	# Subimos 40 pixels para a explosão não parecer "enterrada" no chão
 	exp_inst.global_position = global_position + Vector2(0, -40)
 	
+	# Som da explosão
+	var sfx = AudioStreamPlayer.new()
+	# Tenta carregar sfx_explosion.wav, se não existir usa sfx_fall.wav como placeholder
+	var sfx_path = "res://musics/sfx_explosion.wav"
+	if not FileAccess.file_exists(sfx_path):
+		sfx_path = "res://musics/sfx_fall.wav"
+	
+	sfx.stream = load(sfx_path)
+	sfx.bus = "SFX" if AudioServer.get_bus_index("SFX") != -1 else "Master"
+	sfx.volume_db = 0.0
+	get_parent().add_child(sfx)
+	sfx.play()
+	sfx.finished.connect(sfx.queue_free)
+	
 	# Dano em área
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	for enemy in enemies:
